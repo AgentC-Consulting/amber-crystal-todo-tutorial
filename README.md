@@ -19,6 +19,8 @@ shards build
 # → http://localhost:3000
 ```
 
+(Already have a `todo_app_dev` database from an earlier attempt? Skip `createdb`; the setup SQL is `CREATE TABLE IF NOT EXISTS`, so re-running it is harmless.)
+
 You get a todo list with create, toggle-done, and delete — sessions, CSRF protection, fingerprinted JavaScript via import maps, zero Node toolchain. Now let's build it from nothing.
 
 ## Is the Amber framework still maintained in 2026?
@@ -50,7 +52,7 @@ Three things worth knowing:
 
 1. **`branch: master` is mandatory.** The fork has no v2 release tags, so any `version:` pin either fails to resolve or silently hands you v1 from the old repo.
 2. **Database drivers are no longer bundled.** Amber v1 dragged in pg/mysql/sqlite transitively; v2 makes you add your driver explicitly. We use Granite (an ORM from the Amber ecosystem) plus the `pg` driver.
-3. **`amber new`, `amber db`, `amber watch`, `amber routes` are all gone.** If a tutorial tells you to run any of those, it's a v1 tutorial. You create the project by hand — which turns out to be about six small files.
+3. **`amber new`, `amber db`, `amber watch`, `amber routes` are all gone.** If a tutorial tells you to run any of those, it's a v1 tutorial. You create the project by hand — which turns out to be about a dozen small files (the full layout is in the next section, and every one of them is in this repo).
 
 When it works, `shards install` reports:
 
@@ -68,7 +70,7 @@ I: Installing pg (0.29.0)
 ```
 todo_app/
 ├── shard.yml
-├── db/setup.sql                      # plain SQL — no migration tool is bundled
+├── db/setup.sql                      # plain SQL schema (see the Granite section)
 ├── public/app.css                    # static files, served by the :static pipeline
 ├── src/
 │   ├── todo_app.cr                   # entry point: DB connection, pipelines, routes
@@ -116,7 +118,7 @@ end
 Amber::Server.start
 ```
 
-Every HTTP verb is available (`get`, `post`, `put`, `patch`, `delete`, `options`, `head`), route segments like `:id` become `params["id"]`, and if you prefer Rails-style resourcefulness, `resources "todos", TodosController` generates the seven RESTful routes in one line. The plugs we chose aren't decoration: `Session` and `Flash` are required for `CSRF` to work, and the CSRF section below shows why you want it.
+Every HTTP verb is available (`get`, `post`, `put`, `patch`, `delete`, `options`, `head`, plus `trace` and `connect`), route segments like `:id` become `params["id"]`, and if you prefer Rails-style resourcefulness, `resources "todos", TodosController` wires up the seven RESTful actions (index, show, new, create, edit, update, destroy) in one line. The plugs we chose aren't decoration: `Session` and `Flash` are required for `CSRF` to work, and the CSRF section below shows why you want it.
 
 ## How do I use Granite ORM with Postgres in Amber?
 
@@ -150,10 +152,10 @@ end
 
 The ordering rule is the classic trap: `connection pg` is resolved when the model class is *required*, so the `Granite::Connections <<` line must run first. Keep it at the very top of your entry point.
 
-There is no bundled migration tool in Amber v2 or Granite — you create the table yourself (this repo does it with `psql todo_app_dev < db/setup.sql`; use [micrate](https://github.com/amberframework/micrate) if you want real migrations):
+Amber v2 has no migration workflow, and Granite's built-in migrator can create or drop-and-recreate a model's table (`Todo.migrator.create`, `Todo.migrator.drop_and_create`) but offers no versioned, incremental migrations, so this repo keeps the schema as plain SQL you run once with `psql todo_app_dev < db/setup.sql` (use [micrate](https://github.com/amberframework/micrate) if you want real versioned migrations):
 
 ```sql
-CREATE TABLE todos (
+CREATE TABLE IF NOT EXISTS todos (
   id         BIGSERIAL PRIMARY KEY,
   title      TEXT NOT NULL,
   completed  BOOLEAN NOT NULL DEFAULT FALSE,
@@ -180,6 +182,21 @@ class TodosController < Amber::Controller::Base
   def create
     title = params["title"].to_s.strip
     Todo.new(title: title).save unless title.empty?
+    redirect_to "/"
+  end
+
+  def toggle
+    if todo = Todo.find(params["id"].to_i64)
+      todo.completed = !todo.completed
+      todo.save
+    end
+    redirect_to "/"
+  end
+
+  def delete
+    if todo = Todo.find(params["id"].to_i64)
+      todo.destroy
+    end
     redirect_to "/"
   end
 end
@@ -257,6 +274,9 @@ Our `src/app/javascript/hello_controller.js` is a tiny Stimulus controller, writ
 **Quick answer:** `AssetPipeline::FrontLoader` from the [asset_pipeline](https://github.com/amberframework/asset_pipeline) shard builds the map, SHA-256-fingerprints your local JS files, copies them into your static root, and renders the tag:
 
 ```crystal
+require "../vendor/asset_pipeline/asset_pipeline"
+# (or just `require "asset_pipeline"` if you depend on the shard instead)
+
 module Assets
   FRONT_LOADER = AssetPipeline::FrontLoader.new(
     js_source_path: Path.new("src/app/javascript"),
@@ -282,7 +302,7 @@ Three gotchas we verified the hard way:
 
 1. **`js_output_path` must be your static root.** FrontLoader builds the public URL by string-replacing `js_output_path` with `/`, so with `public/assets` it emits `/hello_controller-HASH.js` while the file sits at `/assets/hello_controller-HASH.js` — a guaranteed 404. Use `Path.new("public")`.
 2. **Cache the rendered tag** (the `@@tag ||=` above). `render_import_map_tag` appends a `modulepreload` link to internal state on every call, so calling it per-request duplicates `<link>` tags and re-hashes your files.
-3. **Why we vendored it:** the asset_pipeline shard is two small Crystal files, but its git repository carries roughly 800 MB of history, which makes `shards install` brutal. We copied the two MIT-licensed files from tag v0.34.0 into `vendor/asset_pipeline/` (attribution headers included). If you'd rather depend on the shard directly, this resolves fine — just budget for the clone:
+3. **Why we vendored it:** the asset_pipeline shard is two small Crystal files, but its git repository carries roughly 800 MB of history, which makes `shards install` brutal. We copied the two MIT-licensed files from tag v0.34.0 into `vendor/asset_pipeline/` (attribution headers included) — if you're building from scratch rather than cloning, grab those two files from this repo's `vendor/asset_pipeline/` directory. If you'd rather depend on the shard directly, this resolves fine — just budget for the clone:
 
 ```yaml
   asset_pipeline:
@@ -306,7 +326,7 @@ Every one of these is something we actually hit while building this app:
 
 ## That's it
 
-That's the whole thing — one model, one controller, two templates, an import map, and zero Node. The complete working app is this repo: clone it, `createdb todo_app_dev && psql todo_app_dev < db/setup.sql && shards install && shards build && ./bin/todo_app`, and you have a Crystal web app at http://localhost:3000 doing full CRUD with CSRF protection and fingerprinted JavaScript.
+That's the whole thing — one model, one controller, two templates, an import map, and zero Node. The complete working app is this repo: clone it, run the five commands from [Run the finished app first](#run-the-finished-app-first), and you have a Crystal web app at http://localhost:3000 creating, toggling, and deleting todos with CSRF protection and fingerprinted JavaScript.
 
 If you're also wiring LLMs into Crystal, we keep a companion guide on [structured JSON output from LLMs in Crystal](https://github.com/AgentC-Consulting/crystal-llm-structured-json?ref=amber-todo), and a broader [Crystal & Amber recipes](https://github.com/AgentC-Consulting/crystal-amber-recipes?ref=amber-todo) collection with copy-paste answers to questions like these.
 
