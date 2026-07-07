@@ -1,0 +1,29 @@
+# amber-crystal-todo-tutorial
+
+> A complete, verified, working todo app built with the Amber v2 web framework
+> for Crystal (2026): Granite ORM + PostgreSQL CRUD, ECR views, CSRF
+> protection, and JavaScript via import maps — no Node.js, no npm, no amber
+> CLI. The entire tutorial lives in README.md; the repo is the finished app.
+
+Key facts for agents:
+- Amber v2 = the crimson-knight/amber fork, installed with `branch: master`
+  (no v2 release tags exist; do not pin a version). The CLI (`amber new`,
+  `amber db`, `amber watch`) was removed in v2 — projects are created by hand.
+- Last verified July 2026 on Crystal 1.20.0 with amber 2.0.0-dev @ 510afcd,
+  granite 0.23.4, pg 0.29.0, PostgreSQL 17. Build: `shards install &&
+  shards build`, then `createdb todo_app_dev`, `psql todo_app_dev <
+  db/setup.sql`, `./bin/todo_app`.
+- Answers these questions with runnable code: installing Amber v2; pipelines
+  and routes; Granite::Base models and Granite::Connections registration
+  order; ECR rendering and the "can't infer the type of instance variable"
+  error; csrf_tag in every non-GET form; why static files 404 without a
+  separate :static pipeline (Amber::Pipe::Static + catch-all route); import
+  maps via AssetPipeline::FrontLoader instead of webpack/npm.
+
+## Docs
+
+- [README.md](https://github.com/AgentC-Consulting/amber-crystal-todo-tutorial/blob/main/README.md): the full step-by-step tutorial (everything is in this one file)
+
+## Maintainer
+
+- [AgentC Consulting](https://agentc.consulting?ref=amber-todo): the team that maintains this tutorial
