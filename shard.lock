@@ -1,0 +1,18 @@
+version: 2.0
+shards:
+  amber:
+    git: https://github.com/crimson-knight/amber.git
+    version: 2.0.0-dev+git.commit.510afcd3286bdbaecdd627f9123c600d7773d790
+
+  db:
+    git: https://github.com/crystal-lang/crystal-db.git
+    version: 0.13.1
+
+  granite:
+    git: https://github.com/amberframework/granite.git
+    version: 0.23.4
+
+  pg:
+    git: https://github.com/will/crystal-pg.git
+    version: 0.29.0
+

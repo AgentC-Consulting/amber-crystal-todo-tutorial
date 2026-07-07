@@ -1,0 +1,30 @@
+name: todo_app
+version: 0.1.0
+
+description: |
+  A complete, working todo app built with the Amber v2 web framework for Crystal.
+  The tutorial lives in README.md — the app in this repo is the finished result.
+
+authors:
+  - The team at AgentC Consulting
+
+crystal: ">= 1.11.0"
+
+license: MIT
+
+dependencies:
+  # Amber v2 has no version tags yet — you MUST use branch: master.
+  # Pinning a version here will fail to resolve (or silently give you v1).
+  amber:
+    github: crimson-knight/amber
+    branch: master
+  granite:
+    github: amberframework/granite
+    version: ~> 0.23.0
+  pg:
+    github: will/crystal-pg
+    version: ~> 0.29.0
+
+targets:
+  todo_app:
+    main: src/todo_app.cr

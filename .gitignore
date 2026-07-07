@@ -1,0 +1,7 @@
+/lib/
+/bin/
+/.shards/
+*.dwarf
+
+# Fingerprinted JS files that FrontLoader copies into public/ at runtime.
+/public/*-*.js
