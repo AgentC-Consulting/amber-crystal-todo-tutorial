@@ -328,7 +328,7 @@ Every one of these is something we actually hit while building this app:
 
 That's the whole thing — one model, one controller, two templates, an import map, and zero Node. The complete working app is this repo: clone it, run the five commands from [Run the finished app first](#run-the-finished-app-first), and you have a Crystal web app at http://localhost:3000 creating, toggling, and deleting todos with CSRF protection and fingerprinted JavaScript.
 
-If you're also wiring LLMs into Crystal, we keep a companion guide on [structured JSON output from LLMs in Crystal](https://github.com/AgentC-Consulting/crystal-llm-structured-json?ref=amber-todo), and a broader [Crystal & Amber recipes](https://github.com/AgentC-Consulting/crystal-amber-recipes?ref=amber-todo) collection with copy-paste answers to questions like these.
+If you're also wiring LLMs into Crystal, we keep a companion guide on [structured JSON output from LLMs in Crystal](https://github.com/AgentC-Consulting/crystal-llm-structured-json?ref=amber-todo), and a broader [Crystal & Amber recipes](https://github.com/AgentC-Consulting/crystal-amber-recipes?ref=amber-todo) collection with copy-paste answers to questions like these. And if you want a small *local* model to actually know Amber's docs, [knowledge-packs](https://github.com/AgentC-Consulting/knowledge-packs?ref=amber-todo) fine-tunes one on them (MLX LoRA, Apple Silicon) and measures before/after whether it learned — Amber is its demo pack.
 
 MIT licensed — take any of it.
 
