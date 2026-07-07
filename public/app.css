@@ -1,0 +1,90 @@
+/* Served by the :static pipeline (Amber::Pipe::Static + the catch-all route). */
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  max-width: 34rem;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+h1 small {
+  font-size: 0.55em;
+  opacity: 0.6;
+  font-weight: normal;
+}
+
+.new-todo {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.new-todo input[type="text"] {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #9993;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+}
+
+button {
+  padding: 0.5rem 0.9rem;
+  font-size: 1rem;
+  border: 1px solid #9993;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #9992;
+}
+
+ul.todos {
+  list-style: none;
+  padding: 0;
+}
+
+ul.todos li {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.4rem 0;
+}
+
+ul.todos li form:first-child {
+  flex: 1;
+  display: flex;
+}
+
+button.toggle {
+  flex: 1;
+  text-align: left;
+  border: none;
+}
+
+button.delete {
+  border: none;
+  opacity: 0.5;
+}
+
+button.delete:hover {
+  opacity: 1;
+  background: none;
+  color: #c0392b;
+}
+
+.count {
+  opacity: 0.6;
+  font-size: 0.9rem;
+}

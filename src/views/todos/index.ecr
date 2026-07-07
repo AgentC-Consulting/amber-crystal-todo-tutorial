@@ -1,0 +1,32 @@
+<main>
+  <h1 data-controller="hello">Crystal Todos</h1>
+
+  <form action="/todos" method="post" class="new-todo">
+    <%= csrf_tag %>
+    <input type="text" name="title" placeholder="What needs doing?" autofocus>
+    <button type="submit">Add</button>
+  </form>
+
+  <ul class="todos">
+    <% @todos.each do |todo| %>
+      <li>
+        <form action="/todos/<%= todo.id %>/toggle" method="post">
+          <%= csrf_tag %>
+          <button type="submit" class="toggle" title="Toggle done">
+            <% if todo.completed %>
+              <s><%= HTML.escape(todo.title.to_s) %></s>
+            <% else %>
+              <%= HTML.escape(todo.title.to_s) %>
+            <% end %>
+          </button>
+        </form>
+        <form action="/todos/<%= todo.id %>/delete" method="post">
+          <%= csrf_tag %>
+          <button type="submit" class="delete" title="Delete">&times;</button>
+        </form>
+      </li>
+    <% end %>
+  </ul>
+
+  <p class="count"><%= @todos.size %> todo<%= @todos.size == 1 ? "" : "s" %> on the list</p>
+</main>

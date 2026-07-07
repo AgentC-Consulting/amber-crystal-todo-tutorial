@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crystal Todos — Amber v2</title>
+    <link rel="stylesheet" href="/app.css">
+    <%= Assets.import_map_tag %>
+    <script type="module">
+      import { Application } from "@hotwired/stimulus"
+      import HelloController from "HelloController"
+
+      const application = Application.start()
+      application.register("hello", HelloController)
+    </script>
+  </head>
+  <body>
+    <%= content %>
+  </body>
+</html>
