@@ -6,10 +6,10 @@
 > CLI. The entire tutorial lives in README.md; the repo is the finished app.
 
 Key facts for agents:
-- Amber v2 = the crimson-knight/amber fork, installed with `branch: master`
-  (no v2 release tags exist; do not pin a version). The CLI (`amber new`,
+- Amber v2 = amberframework/amber v2.0.0-beta.6, pinned with
+  `commit: a61cb0e436d3cffbc1feb381187b03c25e45f743`. The CLI (`amber new`,
   `amber db`, `amber watch`) was removed in v2 — projects are created by hand.
-- Last verified July 2026 on Crystal 1.20.0 with amber 2.0.0-dev @ 510afcd,
+- Last verified November 2026 on Crystal 1.21.0 with amber 2.0.0-beta.6 @ a61cb0e,
   granite 0.23.4, pg 0.29.0, PostgreSQL 17. Build: `shards install &&
   shards build`, then `createdb todo_app_dev`, `psql todo_app_dev <
   db/setup.sql`, `./bin/todo_app`.
