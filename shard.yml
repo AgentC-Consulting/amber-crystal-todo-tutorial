@@ -13,11 +13,10 @@ crystal: ">= 1.11.0"
 license: MIT
 
 dependencies:
-  # Amber v2 has no version tags yet — you MUST use branch: master.
-  # Pinning a version here will fail to resolve (or silently give you v1).
+  # Amber v2.0.0-beta.6, pinned to the release commit.
   amber:
-    github: crimson-knight/amber
-    branch: master
+    github: amberframework/amber
+    commit: a61cb0e436d3cffbc1feb381187b03c25e45f743
   granite:
     github: amberframework/granite
     version: ~> 0.23.0
