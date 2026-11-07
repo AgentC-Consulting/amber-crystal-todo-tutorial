@@ -6,10 +6,10 @@
 > CLI. The entire tutorial lives in README.md; the repo is the finished app.
 
 Key facts for agents:
-- Amber v2 = amberframework/amber v2.0.0-beta.7, pinned with
-  `commit: 21deeec92b9253e9fc7252f994fc3465da0ffd4f`. The CLI (`amber new`,
+- Amber v2 = amberframework/amber v2.0.0-beta.10, pinned with
+  `commit: d291e0930dd22b14a2d10f75a9de063abb0e64e4`. The CLI (`amber new`,
   `amber db`, `amber watch`) was removed in v2 — projects are created by hand.
-- Last verified November 2026 on Crystal 1.21.0 with amber 2.0.0-beta.7 @ 21deeec,
+- Last verified November 2026 on Crystal 1.21.0 with amber 2.0.0-beta.10 @ d291e09,
   granite 0.23.4, pg 0.29.0, PostgreSQL 17. Build: `shards install &&
   shards build`, then `createdb todo_app_dev`, `psql todo_app_dev <
   db/setup.sql`, `./bin/todo_app`.

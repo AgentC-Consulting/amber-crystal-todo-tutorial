@@ -13,10 +13,10 @@ crystal: ">= 1.11.0"
 license: MIT
 
 dependencies:
-  # Amber v2.0.0-beta.7, pinned to the release commit.
+  # Amber v2.0.0-beta.10, pinned to the release commit.
   amber:
     github: amberframework/amber
-    commit: 21deeec92b9253e9fc7252f994fc3465da0ffd4f # v2.0.0-beta.7
+    commit: d291e0930dd22b14a2d10f75a9de063abb0e64e4 # v2.0.0-beta.10
   granite:
     github: amberframework/granite
     version: ~> 0.23.0
