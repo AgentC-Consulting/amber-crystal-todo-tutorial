@@ -2,8 +2,8 @@ version: 2.0
 shards:
   amber:
     git: https://github.com/amberframework/amber.git
-    version: 2.0.0-beta.7+git.commit.21deeec92b9253e9fc7252f994fc3465da0ffd4f
-    checksum: git-tree:d7af4f30415f80e633c49c2d1ff0c32ac6ac7c1a
+    version: 2.0.0-beta.10+git.commit.d291e0930dd22b14a2d10f75a9de063abb0e64e4
+    checksum: git-tree:fb4574c6b15b60357abd43ed0a1a8d7a0957e574
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git

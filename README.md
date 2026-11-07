@@ -1,10 +1,10 @@
 # How do I build a todo app with the Amber framework in Crystal? (2026 step-by-step tutorial)
 
-**Quick answer:** add `amber` (`amberframework/amber`, pinned to the v2.0.0-beta.7 release commit), `granite`, and `pg` to your `shard.yml`, write one model + one controller + two ECR views by hand, and boot with `Amber::Server.configure` + `Amber::Server.start`. There is no `amber new` anymore — Amber v2 is a library, not a CLI. This repo contains the complete working app; the README walks through every file.
+**Quick answer:** add `amber` (`amberframework/amber`, pinned to the v2.0.0-beta.10 release commit), `granite`, and `pg` to your `shard.yml`, write one model + one controller + two ECR views by hand, and boot with `Amber::Server.configure` + `Amber::Server.start`. There is no `amber new` anymore — Amber v2 is a library, not a CLI. This repo contains the complete working app; the README walks through every file.
 
-**Last verified: November 2026 — Crystal 1.21.0, Amber 2.0.0-beta.7 @ 21deeec, granite 0.23.4, pg 0.29.0, PostgreSQL 17.** We re-verify quarterly by rebuilding and re-running the app from scratch.
+**Last verified: November 2026 — Crystal 1.21.0, Amber 2.0.0-beta.10 @ d291e09, granite 0.23.4, pg 0.29.0, PostgreSQL 17.** We re-verify quarterly by rebuilding and re-running the app from scratch.
 
-**Why this exists:** almost every Amber tutorial on the internet describes Amber v1 and starts with `amber new` — a command that no longer exists. Amber v2 ships as beta releases from [amberframework/amber](https://github.com/amberframework/amber) (v2.0.0-beta.7 at this writing), removed the CLI entirely, and pairs beautifully with import maps so you never touch Node.js, npm, or webpack. We hit every pothole so you don't have to, then wrote them all down.
+**Why this exists:** almost every Amber tutorial on the internet describes Amber v1 and starts with `amber new` — a command that no longer exists. Amber v2 ships as beta releases from [amberframework/amber](https://github.com/amberframework/amber) (v2.0.0-beta.10 at this writing), removed the CLI entirely, and pairs beautifully with import maps so you never touch Node.js, npm, or webpack. We hit every pothole so you don't have to, then wrote them all down.
 
 ## Run the finished app first
 
@@ -25,22 +25,22 @@ You get a todo list with create, toggle-done, and delete — sessions, CSRF prot
 
 ## Is the Amber framework still maintained in 2026?
 
-**Quick answer:** yes — as Amber v2, released as betas from [amberframework/amber](https://github.com/amberframework/amber) (v2.0.0-beta.7, November 2026). The last v1 release, v1.4.1 from August 2023, is the old CLI-based line.
+**Quick answer:** yes — as Amber v2, released as betas from [amberframework/amber](https://github.com/amberframework/amber) (v2.0.0-beta.10, November 2026). The last v1 release, v1.4.1 from August 2023, is the old CLI-based line.
 
 Where Amber v2 sits among Crystal web frameworks: **Kemal** is the Sinatra-style micro-framework (one file, routes as blocks), **Lucky** is the heavily type-checked framework with its own CLI and toolchain, and **Amber v2** is the Rails-shaped middle — pipelines, sessions, flash, CSRF, a router DSL, ECR templating — delivered as a plain library you wire up yourself. If you want batteries but not a code generator, this is the one.
 
-The boot banner names the release you installed: `Amber 2.0.0-beta.7 serving application ...`.
+The boot banner names the release you installed: `Amber 2.0.0-beta.10 serving application ...`.
 
-## How do I install Amber v2? (shard.yml pinned to the v2.0.0-beta.7 commit — there is no amber new)
+## How do I install Amber v2? (shard.yml pinned to the v2.0.0-beta.10 commit — there is no amber new)
 
 **Quick answer:** there is no CLI to install. Add this to `shard.yml` and run `shards install`:
 
 ```yaml
 dependencies:
-  # Amber v2.0.0-beta.7, pinned to the release commit.
+  # Amber v2.0.0-beta.10, pinned to the release commit.
   amber:
     github: amberframework/amber
-    commit: 21deeec92b9253e9fc7252f994fc3465da0ffd4f
+    commit: d291e0930dd22b14a2d10f75a9de063abb0e64e4
   granite:
     github: amberframework/granite
     version: ~> 0.23.0
@@ -58,7 +58,7 @@ Three things worth knowing:
 When it works, `shards install` reports:
 
 ```
-I: Installing amber (2.0.0-beta.7 at 21deeec)
+I: Installing amber (2.0.0-beta.10 at d291e09)
 I: Installing db (0.13.1)
 I: Installing granite (0.23.4)
 I: Installing pg (0.29.0)
@@ -319,7 +319,7 @@ Every one of these is something we actually hit while building this app:
 - **403 on your own form POSTs** — a non-GET form is missing `<%= csrf_tag %>`. In a todo app that's usually the toggle/delete button-forms.
 - **Every static URL 404s with `Amber::Exceptions::RouteNotFound`** — `Amber::Pipe::Static` is in your `:web` pipeline where it can never run. You need the separate `:static` pipeline + `get "/*"` catch-all shown above.
 - **Import-map JS 404s** — `js_output_path` points at a subfolder like `public/assets`. Point it at the static root.
-- **`shards install` fetches Amber v1** — your amber entry points at a v1 version range. Use the `amberframework/amber` entry with the v2.0.0-beta.7 `commit:` shown above.
+- **`shards install` fetches Amber v1** — your amber entry points at a v1 version range. Use the `amberframework/amber` entry with the v2.0.0-beta.10 `commit:` shown above.
 - **`INSERT` fails on save** — your table is missing `created_at` / `updated_at` but the model declares `timestamps`.
 - **"No connection registered" style errors from Granite** — the `Granite::Connections <<` line ran after your models were required. Move it above the model requires.
 
